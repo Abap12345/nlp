@@ -47,6 +47,59 @@ for i in range(len(target)):
 print("Final Hypothesis")
 print(hypothesis)
 
+############## lab2 ######
+!pip install pandas
+!pip install numpy
+!pip install csv
+
+import numpy as np
+import pandas as pd
+
+import pandas as pd
+dict_data={'Sky':["Sunny",'Sunny',"Rainy",'Sunny'],
+      "AirTemp":['Warm','Warm','Cold','Warm'],
+      "Humidity":['Normal',"High",'High','High'],
+      'Wind':['Strong','Strong','Strong','Strong'],
+      'Water':['Warm ','Warm ','Warm ','Cool'],
+      'Forecast':['Same','Same','Change','Change'],
+      'EnjoySport':['Yes','Yes','No','Yes']
+      }
+file1=pd.DataFrame(dict_data)
+file1.to_csv('Training_examples.csv',index=False)
+data = pd.read_csv('Training_examples.csv')
+concepts = np.array(data.iloc[:,0:-1])
+target = np.array(data.iloc[:,-1])
+def learn(concepts, target): 
+    specific_h = concepts[0].copy()
+    print("Initialization of specific_h and genearal_h")
+    print(specific_h) 
+    general_h = [["?" for i in range(len(specific_h))] for i in range(len(specific_h))]
+    print(general_h)  
+    for i, h in enumerate(concepts):
+        if target[i] == "Yes":
+            for x in range(len(specific_h)): 
+                if h[x]!= specific_h[x]:                    
+                    specific_h[x] ='?'                     
+                    general_h[x][x] ='?'       
+        if target[i] == "No":            
+            for x in range(len(specific_h)): 
+                if h[x]!= specific_h[x]:                    
+                    general_h[x][x] = specific_h[x]                
+                else:                    
+                    general_h[x][x] = '?'        
+   
+        print(" steps of Candidate Elimination Algorithm",i+1)
+        print(specific_h)
+        print(general_h)
+    indices = [i for i, val in enumerate(general_h) if val == ['?', '?', '?', '?', '?', '?']]    
+    for i in indices:   
+        general_h.remove(['?', '?', '?', '?', '?', '?']) 
+    return specific_h, general_h 
+s_final, g_final = learn(concepts, target)
+print("Final Specific_h: ", s_final, sep="\n")
+print("Final General_h: ", g_final, sep="\n")
+
+
 ####### lab 6###############
 
 !pip install -U scikit-learn
