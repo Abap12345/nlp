@@ -1,0 +1,54 @@
+#lab 1
+"Create csv file on then and there  no need to create txt and excel sheet file "
+!pip install pandas
+!pip install numpy
+!pip install csv
+
+import pandas as pd
+dict_data={'Sky':["Sunny",'Sunny',"Rainy",'Sunny'],
+      "AirTemp":['Warm','Warm','Cold','Warm'],
+      "Humidity":['Normal',"High",'High','High'],
+      'Wind':['Strong','Strong','Strong','Strong'],
+      'Water':['Warm ','Warm ','Warm ','Cool'],
+      'Forecast':['Same','Same','Change','Change'],
+      'EnjoySport':['Yes','Yes','No','Yes']
+
+
+
+
+      }
+file1=pd.DataFrame(dict_data)
+file1.to_csv('lab1.csv')
+#end file
+##############
+
+
+import csv
+a = []
+with open('lab1.csv', 'r') as csvfile:
+    next(csvfile)
+    for row in csv.reader(csvfile):
+        a.append(row)
+    print(a)
+print("\nThe total number of training instances are : ",len(a))
+#Num of attri
+num_attribute = len(a[0])-1
+#h0
+print("\nThe initial hypothesis is : ")
+hypothesis = ['0']*num_attribute
+print(hypothesis)
+for i in range(len(a)):
+    #Yes
+    if a[i][num_attribute] == 'Yes':
+        print("\nInstance ", i+1, "is", a[i], " and is Positive Instance")
+        for j in range(num_attribute):
+            if(hypothesis[j] == '0' or hypothesis[j] == a[i][j]):
+                hypothesis[j] = a[i][j]
+            else:
+                hypothesis[j] = '?'
+        print("The hypothesis for the training instance", i+1, " is: " , hypothesis, "\n")
+    #No
+    if a[i][num_attribute] == 'No':
+        print ("\nInstance ", i+1, "is", a[i], " and is Negative Instance Hence Ignored")
+        print("The hypothesis for the training instance", i+1, " is: " , hypothesis, "\n")
+print("\nThe Maximally specific hypothesis for the training instance is ", hypothesis)
